@@ -1,0 +1,15 @@
+.achievement_form {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.rate_title {
+    font-size: 26px;
+}
+
+.rate {
+    font-size: 70px;
+}
