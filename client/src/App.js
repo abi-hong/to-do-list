@@ -13,6 +13,11 @@ import LoginPage from './components/views/LoginPage/LoginPage';
 import RegisterPage from './components/views/RegisterPage/RegisterPage';
 import MyPage from './components/views/MyPage/MyPage';
 import NavBar from './components/views/NavBar/NavBar';
+import MainPage from './components/views/MainPage/MainPage';
+import daily from './components/views/MainPage/dailyPage/daily';
+import hobby from './components/views/MainPage/hobbyPage/hobby';
+import study from './components/views/MainPage/studyPage/study';
+
 import Auth from './hoc/auth'
 
 function App() {
@@ -32,8 +37,11 @@ function App() {
         <Route exact path="/login" component={Auth(LoginPage, false) } />
         <Route exact path="/register" component={Auth(RegisterPage, false)} />
         <Route exact path="/my" component={Auth(MyPage, true)} />
-        
-        
+        <Route exact path="/main" component={Auth(MainPage, true)} />
+        <Route exact path="/daily" component={Auth(daily, true)} />
+        <Route exact path="/hobby" component={Auth(hobby, true)} />
+        <Route exact path="/study" component={Auth(study, true)} />
+
       </Switch>
     </div>
   </Router>

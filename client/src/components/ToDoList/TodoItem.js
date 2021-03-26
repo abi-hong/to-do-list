@@ -4,11 +4,11 @@ import './TodoItem.css';
 
 class TodoItem extends Component {
 
-    shouldComponentUpdate(nextProps, nextState) {
+    /*shouldComponentUpdate(nextProps, nextState) {
         const checkedChange = this.props.checked !== nextProps.checked;
         const privatedChange = this.props.privated !== nextProps.privated;
         return checkedChange || privatedChange;
-    }
+    }*/
     render() {
         const { text, checked, id, privated, onToggle, onRemove, onPrivate } = this.props;
         //console.log(privated);

@@ -25,6 +25,20 @@ const userSchema = mongoose.Schema({
     required: true,
     minlength: 5,
   },
+  //각 카테고리마다 할일 개수 저장
+  life: {
+    type: Number,
+    default: 0
+  },
+  study: {
+    type: Number,
+    default: 0
+  },
+  hobby:{
+    type: Number,
+    default: 0
+  },
+  mostList: String, //가장 많은 List를 가진 카데고리 저장
   image: String,
   token: {
     // 유효성 관리

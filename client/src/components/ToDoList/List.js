@@ -9,7 +9,16 @@ import axios from "axios";
 const currentUserId = localStorage.getItem("userId");
 
 class List extends Component {
-  id = 0; // id 0으로 초기화.
+
+  componentDidMount() {
+    this.GetFromServer();
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.year !== this.props.year || prevProps.month !== this.props.month || prevProps.today !== this.props.today) {
+      this.GetFromServer(); 
+    }
+  }
 
   state = {
     input: "",
@@ -20,6 +29,7 @@ class List extends Component {
 
   GetFromServer = () => {
     const { writer, category } = this.state;
+    console.log(this.props.year, this.props.month, this.props.today);
 
     let body = {
       writer: writer,
@@ -31,23 +41,17 @@ class List extends Component {
     axios.post("/api/list/getList", body)
       .then((response) => {
         if (response.data.success === true) {
-          for (let i = 0; i < response.data.list.todos.length; i++) {
-            this.setState({ todos: response.data.list.todos });
+          if(response.data.list === null){
+            return this.setState({todos: []});
           }
-          this.id = response.data.listCount;
-        } /*else {
+          this.setState({todos: response.data.list.todos})
+          //console.log(response.data.list.todos);
+        } else {
           alert('list 정보를 가져오는 것을 실패 하였습니다.');
-        }*/
+        }
       });
     //화면 렌더링할때 저장된 list 그대로 출력.  
   }
-
-  componentDidMount() {
-    this.GetFromServer();
-  }
-
-
-
 
   //server로 정보 전송하는 함수 - (새로 생성할 때 & 체크 & 지우기 & 공개 설정) 후에 동작
   PostToServer = () => {
@@ -59,6 +63,9 @@ class List extends Component {
       writer: writer,
       category: category,
       todos: todos,
+      year: this.props.year,
+      month: this.props.month,
+      today: this.props.today
     };
     axios.post("/api/list/saveList", body)
       .then((response) => {
@@ -81,7 +88,7 @@ class List extends Component {
         input: "", // 인풋 비우고
         // concat 을 사용하여 배열에 추가
         todos: todos.concat({
-          id: this.id++,
+          id: todos.length,
           text: input,
           year: this.props.year,
           month: this.props.month,
@@ -139,9 +146,9 @@ class List extends Component {
         todos: todos.filter((todo) => todo.id !== id),
       },
       function () {
-        for (let i = id + 1; i < todos.length; i++) {
-          todos[i].id -= 1;
-        }
+          for (let i = id + 1; i < todos.length; i++) {
+            todos[i].id -= 1;
+          }
         this.PostToServer();
       }
     );

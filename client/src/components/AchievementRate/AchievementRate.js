@@ -10,8 +10,8 @@ import './AchievementRate.css';
 function AchievementRate({ year, month, today }) {
     const [monthRate, setMonthRate] = useState(0);
     const [todayRate, setTodayRate] = useState(0);
-    const [allMonthList, setallMonthList] = useState(1);
-    const [allTodayList, setallTodayList] = useState(1);
+    const [allMonthList, setallMonthList] = useState(0);
+    const [allTodayList, setallTodayList] = useState(0);
     const [checkedMonthList, setcheckedMonthList] = useState(0);
     const [checkedTodayList, setcheckedTodayList] = useState(0);
     const currentUserId = localStorage.getItem("userId");
@@ -21,7 +21,7 @@ function AchievementRate({ year, month, today }) {
 
     useEffect(() => {
         calculateRate();
-    }, [])
+    })
 
     function calculateRate() {
         //server에 선택된 년,월,일 정보 보내기
@@ -31,20 +31,24 @@ function AchievementRate({ year, month, today }) {
             month: month,
             today: today
         }
-        console.log(body);
+        //console.log(body);
 
         axios.post('/api/list/getSuccess', body)
             .then((response) => {
                 //server로부터 list개수 Checked된 개수 받아와서 state값 변경.
-                console.log(response.data);
+                //console.log(response.data);
                 setallMonthList(response.data.monthTotal);
                 setallTodayList(response.data.todayTotal);
                 setcheckedMonthList(response.data.monthDone);
                 setcheckedTodayList(response.data.todayDone);
             })
         //달성률 계산 & state 변경.
-            setMonthRate(Math.round((checkedMonthList / allMonthList) * 100));
-            setTodayRate(Math.round((checkedTodayList / allTodayList) * 100));       
+            if(allMonthList === 0) setMonthRate(0);
+            else setMonthRate(Math.round((checkedMonthList / allMonthList) * 100));
+            if(allTodayList === 0) setTodayRate(0);
+            else setTodayRate(Math.round((checkedTodayList / allTodayList) * 100));  
+            
+                   
     }
 
     return (
