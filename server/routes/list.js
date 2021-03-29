@@ -2,8 +2,6 @@ const express = require("express");
 const router = express.Router();
 const { List } = require("../models/List");
 
-// list 저장 router
-// client에서 post 요청할 때 writer 정보(User)를 함께 보내줘야 함
 router.post("/saveList", (req, res) => {
   const list = new List(req.body);
   List.findOneAndDelete({
@@ -42,8 +40,6 @@ router.post("/getList", (req, res) => {
     "todos.today": req.body.today,
   }).exec((err, list) => {
     if (err) return res.status(400).send(err);
-    // if(!list) : 작성된 리스트가 없어도 화면에 리스트가 없다는 게 뜨게 하기 위해서
-    //이걸 안쓰면 작성된 리스트가 없으면 값이 에러로 뜨기 때문에
     if (!list) return res.json({ success: true, list });
     return res.status(200).json({
       success: true,
@@ -87,7 +83,7 @@ router.post("/getSuccess", (req, res) => {
         todayDone,
         monthTotal,
         monthDone,
-        //list,
+        // list,
       });
     })
     .catch((err) => {

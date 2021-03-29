@@ -2,9 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 function ImageUploader() {
-  const [imageUrl, setImageUrl] = useState(
-    "uploads/default.jpeg"
-  );
+  const [imageUrl, setImageUrl] = useState("uploads/default.jpeg");
 
   const setFile = (e) => {
     if (e.target.files[0]) {
@@ -12,12 +10,12 @@ function ImageUploader() {
       img.append("profile", e.target.files[0]);
       axios
         .post("/api/users/uploadfiles", img, {
-          header: { "content-type": "multipart/form-data" }
+          header: { "content-type": "multipart/form-data" },
         })
         .then((res) => {
           console.log(res);
           setImageUrl(res.data.filePath);
-          window.localStorage.setItem('userImg', res.data.filePath);
+          window.localStorage.setItem("userImg", res.data.filePath);
         })
         .catch((err) => {
           console.error(err);
@@ -26,11 +24,9 @@ function ImageUploader() {
   };
 
   useEffect(() => {
-    const currentUserImg = localStorage.getItem('userImg');
-    if(currentUserImg !== null){
-      setImageUrl(currentUserImg);
-    } 
-  })
+    const currentUserImg = localStorage.getItem("userImg");
+    setImageUrl(currentUserImg);
+  });
 
   return (
     <>

@@ -9,14 +9,17 @@ import axios from "axios";
 const currentUserId = localStorage.getItem("userId");
 
 class List extends Component {
-
   componentDidMount() {
     this.GetFromServer();
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevProps.year !== this.props.year || prevProps.month !== this.props.month || prevProps.today !== this.props.today) {
-      this.GetFromServer(); 
+    if (
+      prevProps.year !== this.props.year ||
+      prevProps.month !== this.props.month ||
+      prevProps.today !== this.props.today
+    ) {
+      this.GetFromServer();
     }
   }
 
@@ -38,20 +41,19 @@ class List extends Component {
       month: this.props.month,
       today: this.props.today,
     };
-    axios.post("/api/list/getList", body)
-      .then((response) => {
-        if (response.data.success === true) {
-          if(response.data.list === null){
-            return this.setState({todos: []});
-          }
-          this.setState({todos: response.data.list.todos})
-          //console.log(response.data.list.todos);
-        } else {
-          alert('list 정보를 가져오는 것을 실패 하였습니다.');
+    axios.post("/api/list/getList", body).then((response) => {
+      if (response.data.success === true) {
+        if (response.data.list === null) {
+          return this.setState({ todos: [] });
         }
-      });
-    //화면 렌더링할때 저장된 list 그대로 출력.  
-  }
+        this.setState({ todos: response.data.list.todos });
+        //console.log(response.data.list.todos);
+      } else {
+        alert("list 정보를 가져오는 것을 실패 하였습니다.");
+      }
+    });
+    //화면 렌더링할때 저장된 list 그대로 출력.
+  };
 
   //server로 정보 전송하는 함수 - (새로 생성할 때 & 체크 & 지우기 & 공개 설정) 후에 동작
   PostToServer = () => {
@@ -65,12 +67,11 @@ class List extends Component {
       todos: todos,
       year: this.props.year,
       month: this.props.month,
-      today: this.props.today
+      today: this.props.today,
     };
-    axios.post("/api/list/saveList", body)
-      .then((response) => {
-        console.log(response.data);
-      });
+    axios.post("/api/list/saveList", body).then((response) => {
+      console.log(response.data);
+    });
   };
 
   handleChange = (e) => {
@@ -146,9 +147,9 @@ class List extends Component {
         todos: todos.filter((todo) => todo.id !== id),
       },
       function () {
-          for (let i = id + 1; i < todos.length; i++) {
-            todos[i].id -= 1;
-          }
+        for (let i = id + 1; i < todos.length; i++) {
+          todos[i].id -= 1;
+        }
         this.PostToServer();
       }
     );

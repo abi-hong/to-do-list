@@ -1,12 +1,12 @@
 import React from "react";
 import axios from "axios";
-import MainList from "./MainList";
-import "./MainPage.css";
+import "../MainPage.css";
+import HobbyList from "./hobbyList";
 
-class MainPage extends React.Component {
+class hobbyPage extends React.Component {
   state = {
     isLoading: true,
-    category: "전체",
+    category: "취미",
     users: []
   };
   getLists = async () => {
@@ -39,7 +39,7 @@ class MainPage extends React.Component {
           ) : (
             <div className="lists">
               {users.map(user => (
-                <MainList
+                <HobbyList
                   key={user.ID}
                   id={user.ID}
                   userImg={user.image}
@@ -55,4 +55,4 @@ class MainPage extends React.Component {
   }
 }
 
-export default MainPage;
+export default hobbyPage;

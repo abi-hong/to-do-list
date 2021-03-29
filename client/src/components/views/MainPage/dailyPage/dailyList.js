@@ -1,8 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import "./MainList.css";
+import "../MainList.css";
 
-function MainList({ userImg, userName, mainCategory }) {
+function dailyList({ userImg, userName, mainCategory }) {
   return (
     <div className="list">
       <Link
@@ -28,4 +28,4 @@ function MainList({ userImg, userName, mainCategory }) {
   );
 }
 
-export default MainList;
+export default dailyList;

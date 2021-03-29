@@ -27,32 +27,31 @@ const listSchema = mongoose.Schema({
   ],
 });
 
-listSchema.statics.saveCategory = function(userId, cb) {
+// 카테고리 수가 같을 때 문제
+listSchema.statics.saveCategory = function (userId, cb) {
   var list = this;
-  var life = 0;
-  var study = 0;
-  var hobby = 0;
-  var most = [];
+  let life = 0;
+  let study = 0;
+  let hobby = 0;
+  let most = [];
   list.find(
     {
       writer: userId,
     },
     function (err, lists) {
       if (err) return cb(err);
-      for(i = 0; i < lists.length; i++) {
-        if(lists[i].category === "일상") {
-          for(j = 0; j < lists[i].todos.length; j++) {
-            if(lists[i].todos[j].privated === false) life += 1;
+      for (i = 0; i < lists.length; i++) {
+        if (lists[i].category === "일상") {
+          for (j = 0; j < lists[i].todos.length; j++) {
+            if (lists[i].todos[j].privated === false) life += 1;
           }
-        }
-        else if(lists[i].category === "공부") {
-          for(j = 0; j < lists[i].todos.length; j++) {
-            if(lists[i].todos[j].privated === false) study += 1;
+        } else if (lists[i].category === "공부") {
+          for (j = 0; j < lists[i].todos.length; j++) {
+            if (lists[i].todos[j].privated === false) study += 1;
           }
-        }
-        else if(lists[i].category === "취미") {
-          for(j = 0; j < lists[i].todos.length; j++) {
-            if(lists[i].todos[j].privated === false) hobby += 1;
+        } else if (lists[i].category === "취미") {
+          for (j = 0; j < lists[i].todos.length; j++) {
+            if (lists[i].todos[j].privated === false) hobby += 1;
           }
         }
       }
@@ -72,18 +71,18 @@ listSchema.statics.saveCategory = function(userId, cb) {
             life: life,
             study: study,
             hobby: hobby,
-            mostList: most[0]
+            mostList: most[0],
           },
         },
         (err, users) => {
-          if(err) return cb(err);
+          if (err) return cb(err);
           cb(null, users);
         }
-      )
+      );
+      // cb(null, lists);
     }
-  )
+  );
 };
-
 
 const List = mongoose.model("List", listSchema); // 스키마와 mongoDB 연결
 module.exports = { List };
